@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Life Dashboard</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header class="header">
+    <div class="header__left">
+      <!-- Dark/Light mode toggle -->
+      <button id="themeToggle" class="btn btn--icon" aria-label="Toggle theme" title="Toggle Light/Dark Mode">
+        <span id="themeIcon">🌙</span>
+      </button>
+    </div>
+
+    <!-- Greeting Section -->
+    <div class="greeting" id="greetingSection">
+      <p class="greeting__time" id="currentTime">00:00:00</p>
+      <p class="greeting__date" id="currentDate">Loading...</p>
+      <h1 class="greeting__text" id="greetingText">Hello!</h1>
+    </div>
+
+    <div class="header__right">
+      <!-- Edit name button -->
+      <button id="editNameBtn" class="btn btn--icon" aria-label="Edit name" title="Set Your Name">✏️</button>
+    </div>
+  </header>
+
+  <!-- Name Edit Modal -->
+  <div id="nameModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="nameModalTitle">
+    <div class="modal__backdrop"></div>
+    <div class="modal__box">
+      <h2 id="nameModalTitle" class="modal__title">What's your name?</h2>
+      <input type="text" id="nameInput" class="input" placeholder="Enter your name..." maxlength="30" />
+      <div class="modal__actions">
+        <button id="saveNameBtn" class="btn btn--primary">Save</button>
+        <button id="cancelNameBtn" class="btn btn--secondary">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="main">
+
+    <!-- ===== FOCUS TIMER ===== -->
+    <section class="card" id="timerSection" aria-labelledby="timerHeading">
+      <div class="card__header">
+        <h2 id="timerHeading" class="card__title">🍅 Focus Timer</h2>
+        <!-- Custom duration control -->
+        <div class="timer__duration-control">
+          <label for="timerDuration" class="label">Minutes:</label>
+          <input type="number" id="timerDuration" class="input input--small" value="25" aria-label="Set timer duration in minutes" />
+          <button id="setDurationBtn" class="btn btn--secondary btn--sm">Set</button>
+        </div>
+      </div>
+
+      <div class="timer__display" aria-live="polite" aria-atomic="true">
+        <span id="timerDisplay">25:00</span>
+      </div>
+
+      <div class="timer__controls">
+        <button id="startBtn" class="btn btn--primary">▶ Start</button>
+        <button id="stopBtn" class="btn btn--secondary" disabled>⏸ Pause</button>
+        <button id="resetBtn" class="btn btn--danger">↺ Reset</button>
+      </div>
+
+      <!-- Progress bar -->
+      <div class="timer__progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <div class="timer__progress-bar" id="timerProgressBar"></div>
+      </div>
+    </section>
+
+    <!-- ===== TO-DO LIST ===== -->
+    <section class="card" id="todoSection" aria-labelledby="todoHeading">
+      <div class="card__header">
+        <h2 id="todoHeading" class="card__title">✅ To-Do List</h2>
+        <span class="badge" id="todoBadge">0</span>
+      </div>
+
+      <!-- Add task form -->
+      <form id="todoForm" class="todo__form" novalidate>
+        <input
+          type="text"
+          id="todoInput"
+          class="input"
+          placeholder="Add a new task..."
+          maxlength="100"
+          aria-label="New task"
+          autocomplete="off"
+        />
+        <button type="submit" class="btn btn--primary">Add</button>
+      </form>
+
+      <!-- Duplicate warning -->
+      <p id="duplicateWarning" class="warning hidden" role="alert">⚠️ Task already exists!</p>
+
+      <!-- Filter buttons -->
+      <div class="todo__filters" role="group" aria-label="Filter tasks">
+        <button class="btn btn--filter active" data-filter="all">All</button>
+        <button class="btn btn--filter" data-filter="active">Active</button>
+        <button class="btn btn--filter" data-filter="done">Done</button>
+      </div>
+
+      <!-- Task list -->
+      <ul class="todo__list" id="todoList" aria-label="Task list"></ul>
+
+      <!-- Clear completed -->
+      <button id="clearDoneBtn" class="btn btn--ghost btn--sm">Clear Completed</button>
+    </section>
+
+    <!-- ===== QUICK LINKS ===== -->
+    <section class="card" id="linksSection" aria-labelledby="linksHeading">
+      <div class="card__header">
+        <h2 id="linksHeading" class="card__title">🔗 Quick Links</h2>
+      </div>
+
+      <!-- Add link form -->
+      <form id="linkForm" class="link__form" novalidate>
+        <input
+          type="text"
+          id="linkName"
+          class="input"
+          placeholder="Label (e.g. GitHub)"
+          maxlength="30"
+          aria-label="Link label"
+          autocomplete="off"
+        />
+        <input
+          type="url"
+          id="linkUrl"
+          class="input"
+          placeholder="URL (e.g. https://github.com)"
+          aria-label="Link URL"
+          autocomplete="off"
+        />
+        <button type="submit" class="btn btn--primary">Add Link</button>
+      </form>
+
+      <!-- Link error -->
+      <p id="linkError" class="warning hidden" role="alert"></p>
+
+      <!-- Links grid -->
+      <div class="links__grid" id="linksGrid" aria-label="Quick links"></div>
+    </section>
+
+  </main>
+
+  <!-- Edit Task Modal -->
+  <div id="editTaskModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="editTaskTitle">
+    <div class="modal__backdrop"></div>
+    <div class="modal__box">
+      <h2 id="editTaskTitle" class="modal__title">Edit Task</h2>
+      <input type="text" id="editTaskInput" class="input" maxlength="100" aria-label="Edit task text" />
+      <div class="modal__actions">
+        <button id="saveEditBtn" class="btn btn--primary">Save</button>
+        <button id="cancelEditBtn" class="btn btn--secondary">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
